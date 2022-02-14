@@ -2,14 +2,15 @@ import React from 'react';
 import AddTaskForm from "./AddTaskForm";
 
 type TodolistHeaderPropsType = {
-    title: string
+    title: string,
+    addTask: (title: string) => void
 }
 
 const TodolistHeader = (props: TodolistHeaderPropsType) => {
     return (
         <>
             <h3>{props.title}</h3>
-            <AddTaskForm />
+            <AddTaskForm addTask={props.addTask}/>
         </>
     );
 };
