@@ -5,7 +5,9 @@ import {FilterValuesType} from "./App";
 type TodolistHeaderPropsType = {
     title: string,
     filter: FilterValuesType,
-    addTask: (title: string) => void
+    addTask: (todolistID: string, title: string) => void
+    removeTodolist: (todolistID: string) => void
+    todolistID: string
 }
 
 const TodolistHeader = (props: TodolistHeaderPropsType) => {
@@ -19,10 +21,19 @@ const TodolistHeader = (props: TodolistHeaderPropsType) => {
             break
     }
 
+    const removeTodolistHandler = () => {
+        props.removeTodolist(props.todolistID)
+    }
+
     return (
         <>
-            <h3>{props.title}<div className={"filter-header"}>{text}</div></h3>
-            <AddTaskForm addTask={props.addTask}/>
+            <h3>{props.title}<button onClick={removeTodolistHandler}>x</button>
+                <div className={"filter-header"}>{text}</div>
+            </h3>
+            <AddTaskForm
+                addTask={props.addTask}
+                todolistID={props.todolistID}
+            />
         </>
     );
 };

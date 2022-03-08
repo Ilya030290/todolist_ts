@@ -8,18 +8,24 @@ import {FilterValuesType} from "./App";
 type TasksListPropsType = {
     tasks: Array<TaskType>,
     filter: FilterValuesType,
-    removeTask: (taskID: string) => void,
-    changeFilter: (filter: FilterValuesType) => void,
-    changeTaskStatus: (taskID: string, isDone: boolean) => void
+    removeTask: (todolistID: string, taskID: string) => void,
+    changeFilter: (todolistID: string, value: FilterValuesType) => void,
+    changeTaskStatus: (todolistID: string, taskID: string, isDone: boolean) => void
+    todolistID: string
 };
 
 const TasksList = (props: TasksListPropsType) => {
+
     const tasksComponentsList = props.tasks.map( task => {
         return <Task key={task.id} {...task}
                      removeTask={props.removeTask}
-                     changeTaskStatus={props.changeTaskStatus}/>
+                     changeTaskStatus={props.changeTaskStatus}
+                     todolistID={props.todolistID}
+        />
     });
+
     const emptyMessage = <span style={{fontSize: "10px"}}>Tasks list with this filter is empty. Please add task</span>
+
     const tasksList = tasksComponentsList.length
         ?
         <ul>
@@ -30,7 +36,11 @@ const TasksList = (props: TasksListPropsType) => {
     return (
         <>
             {tasksList}
-            <ControlButtons changeFilter={props.changeFilter} filter={props.filter}/>
+            <ControlButtons
+                todolistID={props.todolistID}
+                changeFilter={props.changeFilter}
+                filter={props.filter}
+            />
         </>
     );
 };

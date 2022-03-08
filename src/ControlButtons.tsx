@@ -3,19 +3,22 @@ import {FilterValuesType} from "./App";
 
 
 type ControlButtonsType = {
+    todolistID: string
     filter: FilterValuesType,
-    changeFilter: (filter: FilterValuesType) => void
+    changeFilter: (todolistID: string, value: FilterValuesType) => void
 }
 
 const ControlButtons = (props: ControlButtonsType) => {
-    const onClickSetFilter = (filter: FilterValuesType) => {
-        return () => props.changeFilter(filter)
-    }
+
+    const onAllClickSetFilter = () => props.changeFilter(props.todolistID, "all");
+    const onActiveClickSetFilter = () => props.changeFilter(props.todolistID, "active");
+    const onCompletedClickSetFilter = () => props.changeFilter(props.todolistID, "completed");
+
     return (
         <div>
-            <button className={props.filter === "all" ? "button-active" : ""} onClick={onClickSetFilter('all')}>All</button>
-            <button className={props.filter === "active" ? "button-active" : ""} onClick={onClickSetFilter('active')}>Active</button>
-            <button className={props.filter === "completed" ? "button-active" : ""} onClick={onClickSetFilter('completed')}>Completed</button>
+            <button className={props.filter === "all" ? "button-active" : ""} onClick={onAllClickSetFilter}>All</button>
+            <button className={props.filter === "active" ? "button-active" : ""} onClick={onActiveClickSetFilter}>Active</button>
+            <button className={props.filter === "completed" ? "button-active" : ""} onClick={onCompletedClickSetFilter}>Completed</button>
         </div>
     );
 };
