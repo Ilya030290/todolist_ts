@@ -6,12 +6,13 @@ import {FilterValuesType} from "./App";
 
 
 type TasksListPropsType = {
-    tasks: Array<TaskType>,
-    filter: FilterValuesType,
-    removeTask: (todolistID: string, taskID: string) => void,
-    changeFilter: (todolistID: string, value: FilterValuesType) => void,
+    tasks: Array<TaskType>
+    filter: FilterValuesType
+    removeTask: (todolistID: string, taskID: string) => void
+    changeFilter: (todolistID: string, value: FilterValuesType) => void
     changeTaskStatus: (todolistID: string, taskID: string, isDone: boolean) => void
     todolistID: string
+    changeTaskTitle: (todolistID: string, taskID: string, title: string) => void
 };
 
 const TasksList = (props: TasksListPropsType) => {
@@ -21,6 +22,7 @@ const TasksList = (props: TasksListPropsType) => {
                      removeTask={props.removeTask}
                      changeTaskStatus={props.changeTaskStatus}
                      todolistID={props.todolistID}
+                     changeTaskTitle={props.changeTaskTitle}
         />
     });
 

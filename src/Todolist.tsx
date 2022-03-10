@@ -1,5 +1,5 @@
 import React from 'react';
-import TodolistHeader from "./TodolistHeader";
+import {TodolistHeader} from "./TodolistHeader";
 import TasksList from "./TasksList";
 import {FilterValuesType} from "./App";
 
@@ -14,6 +14,8 @@ type TodolistPropsType = {
     addTask: (todolistID: string, title: string) => void
     changeTaskStatus: (todolistID: string, taskID: string, isDone: boolean) => void
     removeTodolist: (todolistID: string) => void
+    changeTaskTitle: (todolistID: string, taskID: string, title: string) => void
+    changeTodolistTitle: (todolistID: string, title: string) => void
 }
 
 export type TaskType = {
@@ -31,6 +33,7 @@ const Todolist = (props: TodolistPropsType) => {
                     title={props.title}
                     addTask={props.addTask}
                     filter={props.filter}
+                    changeTodolistTitle={props.changeTodolistTitle}
                 />
                 <TasksList
                     todolistID={props.todolistID}
@@ -39,6 +42,7 @@ const Todolist = (props: TodolistPropsType) => {
                     changeFilter={props.changeFilter}
                     filter={props.filter}
                     changeTaskStatus={props.changeTaskStatus}
+                    changeTaskTitle={props.changeTaskTitle}
                 />
             </div>
     );

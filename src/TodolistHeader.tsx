@@ -1,6 +1,7 @@
 import React from 'react';
 import AddTaskForm from "./AddTaskForm";
 import {FilterValuesType} from "./App";
+import {EditableSpan} from "./components/EditableSpan";
 
 type TodolistHeaderPropsType = {
     title: string,
@@ -8,9 +9,10 @@ type TodolistHeaderPropsType = {
     addTask: (todolistID: string, title: string) => void
     removeTodolist: (todolistID: string) => void
     todolistID: string
+    changeTodolistTitle: (todolistID: string, title: string) => void
 }
 
-const TodolistHeader = (props: TodolistHeaderPropsType) => {
+export const TodolistHeader = (props: TodolistHeaderPropsType) => {
     let text = "all"
     switch (props.filter) {
         case "active":
@@ -24,10 +26,15 @@ const TodolistHeader = (props: TodolistHeaderPropsType) => {
     const removeTodolistHandler = () => {
         props.removeTodolist(props.todolistID)
     }
+    const changeTodolistTitle = (title: string) => {
+        props.changeTodolistTitle(props.todolistID, title)
+    }
 
     return (
         <>
-            <h3>{props.title}<button onClick={removeTodolistHandler}>x</button>
+            <h3>
+                <EditableSpan oldTitle={props.title} changeTitle={changeTodolistTitle}/>
+                <button onClick={removeTodolistHandler}>x</button>
                 <div className={"filter-header"}>{text}</div>
             </h3>
             <AddTaskForm
@@ -38,4 +45,3 @@ const TodolistHeader = (props: TodolistHeaderPropsType) => {
     );
 };
 
-export default TodolistHeader;
