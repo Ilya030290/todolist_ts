@@ -1,5 +1,6 @@
 import React from 'react';
 import {FilterValuesType} from "./App";
+import {Button} from "@material-ui/core";
 
 
 type ControlButtonsType = {
@@ -16,9 +17,27 @@ const ControlButtons = (props: ControlButtonsType) => {
 
     return (
         <div>
-            <button className={props.filter === "all" ? "button-active" : ""} onClick={onAllClickSetFilter}>All</button>
-            <button className={props.filter === "active" ? "button-active" : ""} onClick={onActiveClickSetFilter}>Active</button>
-            <button className={props.filter === "completed" ? "button-active" : ""} onClick={onCompletedClickSetFilter}>Completed</button>
+            <Button
+                color={props.filter === 'all' ? "secondary" : "primary"}
+                style={{margin: "5px"}}
+                size={'small'}
+                variant={'contained'}
+                onClick={onAllClickSetFilter}>All
+            </Button>
+            <Button
+                color={props.filter === 'active' ? "secondary" : "primary"}
+                style={{margin: "5px"}}
+                size={'small'}
+                variant={'contained'}
+                onClick={onActiveClickSetFilter}>Active
+            </Button>
+            <Button
+                color={props.filter === 'completed' ? "secondary" : "primary"}
+                style={{margin: "5px"}}
+                size={'small'}
+                variant={'contained'}
+                onClick={onCompletedClickSetFilter}>Completed
+            </Button>
         </div>
     );
 };

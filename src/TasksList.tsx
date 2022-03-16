@@ -3,6 +3,9 @@ import Task from "./Task";
 import {TaskType} from "./Todolist";
 import ControlButtons from "./ControlButtons";
 import {FilterValuesType} from "./App";
+import {List} from "@material-ui/core";
+
+
 
 
 type TasksListPropsType = {
@@ -18,11 +21,12 @@ type TasksListPropsType = {
 const TasksList = (props: TasksListPropsType) => {
 
     const tasksComponentsList = props.tasks.map( task => {
-        return <Task key={task.id} {...task}
-                     removeTask={props.removeTask}
-                     changeTaskStatus={props.changeTaskStatus}
-                     todolistID={props.todolistID}
-                     changeTaskTitle={props.changeTaskTitle}
+        return <Task
+            key={task.id} {...task}
+            removeTask={props.removeTask}
+            changeTaskStatus={props.changeTaskStatus}
+            todolistID={props.todolistID}
+            changeTaskTitle={props.changeTaskTitle}
         />
     });
 
@@ -30,14 +34,16 @@ const TasksList = (props: TasksListPropsType) => {
 
     const tasksList = tasksComponentsList.length
         ?
-        <ul>
+        <List>
             {tasksComponentsList}
-        </ul>
+        </List>
         :
         emptyMessage
     return (
         <>
+            <List>
             {tasksList}
+            </List>
             <ControlButtons
                 todolistID={props.todolistID}
                 changeFilter={props.changeFilter}

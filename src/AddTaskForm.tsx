@@ -1,4 +1,7 @@
 import React, {ChangeEvent, useState, KeyboardEvent, CSSProperties} from 'react';
+import {Button, IconButton, TextField} from "@material-ui/core";
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import {ControlPoint} from "@material-ui/icons";
 
 type AddTaskFormPropsType = {
     addTask: (todolistID: string, title: string) => void
@@ -30,20 +33,21 @@ const AddTaskForm = (props: AddTaskFormPropsType) => {
         e.key === "Enter" && onClickAddTask()
     }
 
-    const errorMessageStyle : CSSProperties = {backgroundColor: "red", color: "white", textAlign: "center"}
-    const errorMessage = error && <div style={errorMessageStyle}>Title is require!</div>
-    const errorInputClass = error ? "error" : ""
-
     return (
         <div>
-            <input
-                onChange={onChangeSetTitle}
+            <TextField
+                variant={"outlined"}
                 value={title}
+                onChange={onChangeSetTitle}
                 onKeyPress={onKeyPressSetTitle}
-                className={errorInputClass}
+                size={"small"}
+                label={"Title"}
+                error={!!error}
+                helperText={!!error && "Please enter the text!"}
             />
-            <button onClick={onClickAddTask}>+</button>
-            {errorMessage}
+            <IconButton color={'primary'} onClick={onClickAddTask} size={'medium'}>
+                <ControlPoint/>
+            </IconButton>
         </div>
     );
 };

@@ -26,7 +26,7 @@ export type TaskType = {
 
 const Todolist = (props: TodolistPropsType) => {
     return (
-            <div>
+            <div style={{width: "fit-content", textAlign: "center"}}>
                 <TodolistHeader
                     removeTodolist={props.removeTodolist}
                     todolistID={props.todolistID}
