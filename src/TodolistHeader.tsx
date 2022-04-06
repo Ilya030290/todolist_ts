@@ -8,10 +8,10 @@ import {IconButton} from "@material-ui/core";
 type TodolistHeaderPropsType = {
     title: string,
     filter: FilterValuesType,
-    addTask: (todolistID: string, title: string) => void
-    removeTodolist: (todolistID: string) => void
+    addTask: (title: string, todolistId: string) => void
+    removeTodolist: (id: string) => void
     todolistID: string
-    changeTodolistTitle: (todolistID: string, title: string) => void
+    changeTodolistTitle: (id: string, title: string) => void
 }
 
 export const TodolistHeader = (props: TodolistHeaderPropsType) => {

@@ -6,19 +6,19 @@ import {DeleteOutline} from "@material-ui/icons";
 
 type TaskPropsType = TaskType & {
     todolistID: string
-    removeTask: (todolistID: string, taskID: string) => void
-    changeTaskStatus: (todolistID: string, taskID: string, isDone: boolean) => void
-    changeTaskTitle: (todolistID: string, taskID: string, title: string) => void
+    removeTask: (taskId: string, todolistId: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
+    changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
 }
 
 const Task = (props: TaskPropsType) => {
 
-    const removeTask = () => props.removeTask(props.todolistID, props.id);
+    const removeTask = () => props.removeTask(props.id, props.todolistID);
 
     const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) =>
-        props.changeTaskStatus(props.todolistID, props.id, e.currentTarget.checked);
+        props.changeTaskStatus(props.id, e.currentTarget.checked ,props.todolistID);
 
-    const changeTaskTitle = (title: string) => props.changeTaskTitle(props.todolistID, props.id, title);
+    const changeTaskTitle = (title: string) => props.changeTaskTitle(props.id, title, props.todolistID,);
 
     return (
         <li style={{display: "flex", justifyContent: "space-between", fontWeight: 'bold'}}

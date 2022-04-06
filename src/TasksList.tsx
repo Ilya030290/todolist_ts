@@ -11,11 +11,11 @@ import {List} from "@material-ui/core";
 type TasksListPropsType = {
     tasks: Array<TaskType>
     filter: FilterValuesType
-    removeTask: (todolistID: string, taskID: string) => void
-    changeFilter: (todolistID: string, value: FilterValuesType) => void
-    changeTaskStatus: (todolistID: string, taskID: string, isDone: boolean) => void
+    removeTask: (taskId: string, todolistId: string) => void
+    changeFilter: (id: string, filter: FilterValuesType) => void
+    changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
     todolistID: string
-    changeTaskTitle: (todolistID: string, taskID: string, title: string) => void
+    changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
 };
 
 const TasksList = (props: TasksListPropsType) => {

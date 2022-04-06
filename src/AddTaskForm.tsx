@@ -4,7 +4,7 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import {ControlPoint} from "@material-ui/icons";
 
 type AddTaskFormPropsType = {
-    addTask: (todolistID: string, title: string) => void
+    addTask: (title: string, todolistId: string) => void
     todolistID: string
 }
 
@@ -17,7 +17,7 @@ const AddTaskForm = (props: AddTaskFormPropsType) => {
 
         const trimmedTitle = title.trim()
         if (trimmedTitle !== "") {
-            props.addTask(props.todolistID, trimmedTitle)
+            props.addTask(trimmedTitle, props.todolistID)
             setTitle("")
         } else {
             setError(true)

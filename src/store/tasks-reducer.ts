@@ -1,6 +1,6 @@
 import {TaskStateType} from '../App';
 import {v1} from 'uuid';
-import {AddTodolistAT, RemoveTodolistAT} from "./todolists-reducer";
+import {AddTodolistAT, RemoveTodolistAT, todolistID1, todolistID2} from "./todolists-reducer";
 
 export type RemoveTaskAT = {
     type: 'REMOVE-TASK'
@@ -33,7 +33,24 @@ type ActionsType = RemoveTaskAT
     | AddTodolistAT
     | RemoveTodolistAT;
 
-export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskStateType => {
+const initialState: TaskStateType = {
+    [todolistID1]:[
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false},
+        {id: v1(), title: "Rest API", isDone: false},
+        {id: v1(), title: "GraphQL", isDone: false},
+    ],
+    [todolistID2]:[
+        {id: v1(), title: "Bread", isDone: true},
+        {id: v1(), title: "Milk", isDone: true},
+        {id: v1(), title: "Water", isDone: true},
+        {id: v1(), title: "Computer", isDone: false},
+        {id: v1(), title: "IPhone", isDone: false},
+    ]
+};
+
+export const tasksReducer = (state = initialState, action: ActionsType): TaskStateType => {
     switch (action.type) {
         case 'REMOVE-TASK':
             return {...state, [action.todolistId]: state[action.todolistId].filter(task => task.id !== action.taskId)}
@@ -52,7 +69,7 @@ export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskSta
             delete newState[action.id]
             return newState
         default:
-            throw new Error("I don't understand this type")
+            return state;
     }
 }
 

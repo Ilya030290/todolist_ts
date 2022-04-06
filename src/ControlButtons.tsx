@@ -6,7 +6,7 @@ import {Button} from "@material-ui/core";
 type ControlButtonsType = {
     todolistID: string
     filter: FilterValuesType,
-    changeFilter: (todolistID: string, value: FilterValuesType) => void
+    changeFilter: (id: string, filter: FilterValuesType) => void
 }
 
 const ControlButtons = (props: ControlButtonsType) => {

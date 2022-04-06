@@ -3,7 +3,7 @@ import {IconButton, TextField} from "@material-ui/core";
 import {ControlPoint} from "@material-ui/icons";
 
 type AddItemFormPropsType = {
-    addItem: (newTitle: string) => void
+    addItem: (title: string) => void
 }
 
 export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
