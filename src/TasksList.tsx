@@ -18,7 +18,7 @@ type TasksListPropsType = {
     changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
 };
 
-const TasksList = (props: TasksListPropsType) => {
+const TasksList = React.memo((props: TasksListPropsType) => {
 
     const tasksComponentsList = props.tasks.map( task => {
         return <Task
@@ -51,6 +51,6 @@ const TasksList = (props: TasksListPropsType) => {
             />
         </>
     );
-};
+});
 
 export default TasksList;

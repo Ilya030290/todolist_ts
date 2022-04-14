@@ -18,7 +18,6 @@ export type ChangeTaskStatusAT = {
     isDone: boolean
     todolistId: string
 }
-
 export type ChangeTaskTitleAT = {
     type: 'CHANGE-TASK-TITLE'
     taskId: string
@@ -57,11 +56,9 @@ export const tasksReducer = (state = initialState, action: ActionsType): TaskSta
         case 'ADD-TASK':
             return {...state, [action.todolistId]: [{id: v1(), title: action.title, isDone: false}, ...state[action.todolistId]]}
         case 'CHANGE-TASK-STATUS':
-            return {...state,
-                [action.todolistId]: state[action.todolistId].map(task => task.id === action.taskId ? {...task, isDone: action.isDone} : task)}
+            return {...state, [action.todolistId]: state[action.todolistId].map(task => task.id === action.taskId ? {...task, isDone: action.isDone} : task)}
         case 'CHANGE-TASK-TITLE':
-            return {...state,
-                [action.todolistId]: state[action.todolistId].map(task => task.id === action.taskId ? {...task, title: action.title} : task)}
+            return {...state, [action.todolistId]: state[action.todolistId].map(task => task.id === action.taskId ? {...task, title: action.title} : task)}
         case 'ADD-TODOLIST':
             return {...state, [action.todolistId]: []}
         case 'REMOVE-TODOLIST':

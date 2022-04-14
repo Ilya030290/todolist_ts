@@ -1,5 +1,5 @@
 import {TaskType} from "./Todolist";
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useCallback} from "react";
 import {EditableSpan} from "./components/EditableSpan";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {DeleteOutline} from "@material-ui/icons";
@@ -11,14 +11,18 @@ type TaskPropsType = TaskType & {
     changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
 }
 
-const Task = (props: TaskPropsType) => {
+const Task = React.memo((props: TaskPropsType) => {
 
-    const removeTask = () => props.removeTask(props.id, props.todolistID);
+    const removeTask = useCallback(() => props.removeTask(props.id, props.todolistID),
+        [props.removeTask, props.id, props.todolistID]);
 
-    const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) =>
-        props.changeTaskStatus(props.id, e.currentTarget.checked ,props.todolistID);
+    const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        let newIsDoneValue = e.currentTarget.checked;
+        props.changeTaskStatus(props.id, newIsDoneValue, props.todolistID);
+    }, [props.changeTaskStatus, props.id ,props.todolistID]);
 
-    const changeTaskTitle = (title: string) => props.changeTaskTitle(props.id, title, props.todolistID,);
+    const changeTaskTitle = useCallback((title: string) => props.changeTaskTitle(props.id, title, props.todolistID),
+        [props.changeTaskTitle, props.id, props.todolistID]);
 
     return (
         <li style={{display: "flex", justifyContent: "space-between", fontWeight: 'bold'}}
@@ -37,7 +41,7 @@ const Task = (props: TaskPropsType) => {
             </IconButton>
         </li>
     );
-};
+});
 
 
 export default Task;

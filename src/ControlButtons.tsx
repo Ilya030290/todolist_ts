@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {FilterValuesType} from "./App";
 import {Button} from "@material-ui/core";
 
@@ -9,11 +9,11 @@ type ControlButtonsType = {
     changeFilter: (id: string, filter: FilterValuesType) => void
 }
 
-const ControlButtons = (props: ControlButtonsType) => {
+const ControlButtons = React.memo((props: ControlButtonsType) => {
 
-    const onAllClickSetFilter = () => props.changeFilter(props.todolistID, "all");
-    const onActiveClickSetFilter = () => props.changeFilter(props.todolistID, "active");
-    const onCompletedClickSetFilter = () => props.changeFilter(props.todolistID, "completed");
+    const onAllClickSetFilter = useCallback(() => props.changeFilter(props.todolistID, "all"), [props.changeFilter, props.todolistID]);
+    const onActiveClickSetFilter = useCallback(() => props.changeFilter(props.todolistID, "active"), [props.changeFilter, props.todolistID]);
+    const onCompletedClickSetFilter = useCallback(() => props.changeFilter(props.todolistID, "completed"), [props.changeFilter, props.todolistID]);
 
     return (
         <div>
@@ -40,6 +40,6 @@ const ControlButtons = (props: ControlButtonsType) => {
             </Button>
         </div>
     );
-};
+});
 
 export default ControlButtons;

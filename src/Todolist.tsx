@@ -24,7 +24,17 @@ export type TaskType = {
     isDone: boolean
 }
 
-const Todolist = (props: TodolistPropsType) => {
+const Todolist = React.memo((props: TodolistPropsType) => {
+
+    let tasksForTodolist = props.tasks;
+
+    if (props.filter === "active") {
+        tasksForTodolist = tasksForTodolist.filter(t => !t.isDone);
+    }
+    if (props.filter === "completed") {
+        tasksForTodolist = tasksForTodolist.filter(t => t.isDone);
+    }
+
     return (
             <div style={{width: "fit-content", textAlign: "center"}}>
                 <TodolistHeader
@@ -37,7 +47,7 @@ const Todolist = (props: TodolistPropsType) => {
                 />
                 <TasksList
                     todolistID={props.todolistID}
-                    tasks={props.tasks}
+                    tasks={tasksForTodolist}
                     removeTask={props.removeTask}
                     changeFilter={props.changeFilter}
                     filter={props.filter}
@@ -46,6 +56,6 @@ const Todolist = (props: TodolistPropsType) => {
                 />
             </div>
     );
-};
+});
 
 export default Todolist;
