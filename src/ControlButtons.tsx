@@ -22,21 +22,27 @@ const ControlButtons = React.memo((props: ControlButtonsType) => {
                 style={{margin: "5px"}}
                 size={'small'}
                 variant={'contained'}
-                onClick={onAllClickSetFilter}>All
+                onClick={onAllClickSetFilter}
+            >
+                All
             </Button>
             <Button
                 color={props.filter === 'active' ? "secondary" : "primary"}
                 style={{margin: "5px"}}
                 size={'small'}
                 variant={'contained'}
-                onClick={onActiveClickSetFilter}>Active
+                onClick={onActiveClickSetFilter}
+            >
+                Active
             </Button>
             <Button
                 color={props.filter === 'completed' ? "secondary" : "primary"}
                 style={{margin: "5px"}}
                 size={'small'}
                 variant={'contained'}
-                onClick={onCompletedClickSetFilter}>Completed
+                onClick={onCompletedClickSetFilter}
+            >
+                Completed
             </Button>
         </div>
     );
