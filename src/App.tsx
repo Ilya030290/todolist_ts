@@ -2,8 +2,6 @@ import React, {useCallback} from 'react';
 import './App.css';
 import Todolist, {TaskType} from "./Todolist";
 import {AddItemForm} from "./components/AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
 import {
     AddTodolistAC,
     ChangeTodolistFilterAC,
@@ -13,6 +11,8 @@ import {
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {Menu} from "@mui/icons-material";
 
 export type FilterValuesType = "all" | "active" | "completed";
 

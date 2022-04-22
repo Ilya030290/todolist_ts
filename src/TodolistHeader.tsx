@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
 import {FilterValuesType} from "./App";
 import {EditableSpan} from "./components/EditableSpan";
-import {DeleteOutline} from "@material-ui/icons";
-import {IconButton} from "@material-ui/core";
 import {AddItemForm} from "./components/AddItemForm";
+import {IconButton} from "@mui/material";
+import {DeleteOutline} from "@mui/icons-material";
 
 type TodolistHeaderPropsType = {
     title: string,

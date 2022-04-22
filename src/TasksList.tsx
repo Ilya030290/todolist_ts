@@ -3,7 +3,8 @@ import Task from "./Task";
 import {TaskType} from "./Todolist";
 import ControlButtons from "./ControlButtons";
 import {FilterValuesType} from "./App";
-import {List} from "@material-ui/core";
+import {List} from "@mui/material";
+
 
 
 
