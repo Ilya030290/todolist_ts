@@ -33,7 +33,7 @@ type ActionsType = RemoveTaskAT
     | RemoveTodolistAT;
 
 const initialState: TaskStateType = {
-    [todolistID1]:[
+    /*[todolistID1]:[
         {id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
         {id: v1(), title: "ReactJS", isDone: false},
@@ -46,7 +46,7 @@ const initialState: TaskStateType = {
         {id: v1(), title: "Water", isDone: true},
         {id: v1(), title: "Computer", isDone: false},
         {id: v1(), title: "IPhone", isDone: false},
-    ]
+    ]*/
 };
 
 export const tasksReducer = (state = initialState, action: ActionsType): TaskStateType => {
