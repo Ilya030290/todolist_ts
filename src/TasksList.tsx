@@ -1,9 +1,9 @@
 import React from 'react';
 import Task from "./Task";
-import {TaskType} from "./Todolist";
 import ControlButtons from "./ControlButtons";
-import {FilterValuesType} from "./App";
 import {List} from "@mui/material";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {FilterValuesType} from "./store/todolists-reducer";
 
 
 
@@ -14,7 +14,7 @@ type TasksListPropsType = {
     filter: FilterValuesType
     removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (id: string, filter: FilterValuesType) => void
-    changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
+    changeTaskStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
     todolistID: string
     changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
 };

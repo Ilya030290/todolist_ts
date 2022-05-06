@@ -1,14 +1,14 @@
-import {TaskType} from "./Todolist";
 import React, {ChangeEvent, useCallback} from "react";
 import {EditableSpan} from "./components/EditableSpan";
 import {Checkbox, IconButton} from "@mui/material";
 import {DeleteOutline} from "@mui/icons-material";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
 
 
 type TaskPropsType = TaskType & {
     todolistID: string
     removeTask: (taskId: string, todolistId: string) => void
-    changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
+    changeTaskStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
     changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
 }
 
@@ -19,7 +19,7 @@ const Task = React.memo((props: TaskPropsType) => {
 
     const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked;
-        props.changeTaskStatus(props.id, newIsDoneValue, props.todolistID);
+        props.changeTaskStatus(props.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todolistID);
     }, [props.changeTaskStatus, props.id ,props.todolistID]);
 
     const changeTaskTitle = useCallback((title: string) => props.changeTaskTitle(props.id, title, props.todolistID),
@@ -27,10 +27,10 @@ const Task = React.memo((props: TaskPropsType) => {
 
     return (
         <li style={{display: "flex", justifyContent: "space-between", fontWeight: 'bold'}}
-            className={props.isDone ? 'task-completed' : ''}>
+            className={props.status === TaskStatuses.Completed ? 'task-completed' : ''}>
             <Checkbox
                 onChange={changeTaskStatus}
-                checked={props.isDone}
+                checked={props.status === TaskStatuses.Completed}
                 size={'small'}
             />
             <EditableSpan
