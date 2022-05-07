@@ -3,7 +3,7 @@ import {TodolistHeader} from "./TodolistHeader";
 import TasksList from "./TasksList";
 import {FilterValuesType} from "./store/todolists-reducer";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {fetchTasksTC} from "./store/tasks-reducer";
+import {setTasksTC} from "./store/tasks-reducer";
 import {useAppDispatch} from "./store/store";
 
 
@@ -28,7 +28,7 @@ const Todolist = React.memo((props: TodolistPropsType) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchTasksTC(props.todolistID))
+        dispatch(setTasksTC(props.todolistID))
     }, [])
 
     let tasksForTodolist = props.tasks;

@@ -27,7 +27,7 @@ export type ChangeTaskTitleAT = {
     todolistId: string
 }
 
-export type FetchTasksAT = ReturnType<typeof fetchTasksAC>
+export type SetTasksAT = ReturnType<typeof setTasksAC>
 
 type ActionsType = RemoveTaskAT
     | AddTaskAT
@@ -36,13 +36,13 @@ type ActionsType = RemoveTaskAT
     | AddTodolistAT
     | RemoveTodolistAT
     | SetTodolistsAT
-    | FetchTasksAT
+    | SetTasksAT
 
 const initialState: TaskStateType = {}
 
 export const tasksReducer = (state: TaskStateType = initialState, action: ActionsType): TaskStateType => {
     switch (action.type) {
-        case "FETCH-TASKS":
+        case "SET-TASKS":
             return {...state, [action.todolistId]: action.tasks}
         case "SET-TODOLISTS":
             let stateCopy = {...state}
@@ -73,7 +73,7 @@ export const tasksReducer = (state: TaskStateType = initialState, action: Action
                 } : task)
             }
         case 'ADD-TODOLIST':
-            return {...state, [action.todolistId]: []}
+            return {...state, [action.todolist.id]: []}
         case 'REMOVE-TODOLIST':
             let newState = {...state}
             delete newState[action.id]
@@ -99,8 +99,8 @@ export const changeTaskTitleAC = (taskId: string, title: string, todolistId: str
     return {type: 'CHANGE-TASK-TITLE', taskId: taskId, title: title, todolistId: todolistId}
 }
 
-export const fetchTasksAC = (todolistId: string, tasks: TaskType[]) => {
-    return {type: "FETCH-TASKS", todolistId, tasks} as const
+export const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
+    return {type: "SET-TASKS", todolistId, tasks} as const
 }
 
 
@@ -109,11 +109,11 @@ export const fetchTasksAC = (todolistId: string, tasks: TaskType[]) => {
 export type TasksDispatch = ThunkDispatch<TaskStateType, unknown, ActionsType>;
 export type TasksThunkType = ThunkAction<void, TaskStateType, unknown, ActionsType>
 
-export const fetchTasksTC = (todolistId: string): TasksThunkType => {
+export const setTasksTC = (todolistId: string): TasksThunkType => {
     return (dispatch: TasksDispatch) => {
         TodolistApi.getTasks(todolistId)
             .then((res) => {
-                dispatch(fetchTasksAC(todolistId, res.data.items))
+                dispatch(setTasksAC(todolistId, res.data.items))
             })
     }
 }
@@ -162,3 +162,5 @@ export const ChangeTaskStatusTC = (todolistId: string, taskId: string, status: T
 
     }
 }
+
+

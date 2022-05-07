@@ -5,8 +5,8 @@ import {AddItemForm} from "./components/AddItemForm";
 import {
     AddTodolistAC,
     ChangeTodolistFilterAC,
-    ChangeTodolistTitleAC, fetchTodolistsTC, FilterValuesType,
-    RemoveTodolistAC, TodolistType
+    ChangeTodolistTitleAC, setTodolistsTC, FilterValuesType,
+    RemoveTodolistAC, TodolistType, removeTodolistTC, addTodolistTC
 } from "./store/todolists-reducer";
 import {
     addTaskTC,
@@ -30,7 +30,7 @@ const App = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchTodolistsTC())
+        dispatch(setTodolistsTC())
     }, [])
 
     const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists);
@@ -58,11 +58,11 @@ const App = () => {
     }, [dispatch]);
 
     const removeTodolist = useCallback((id: string) => {
-        dispatch(RemoveTodolistAC(id));
+        dispatch(removeTodolistTC(id));
     }, [dispatch]);
 
     const addNewTodolist = useCallback((title: string) => {
-        dispatch(AddTodolistAC(title));
+        dispatch(addTodolistTC(title));
     }, [dispatch]);
 
     const changeTodolistTitle = useCallback((id: string, title: string) => {
