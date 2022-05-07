@@ -3,10 +3,9 @@ import './App.css';
 import Todolist from "./Todolist";
 import {AddItemForm} from "./components/AddItemForm";
 import {
-    AddTodolistAC,
     ChangeTodolistFilterAC,
-    ChangeTodolistTitleAC, setTodolistsTC, FilterValuesType,
-    RemoveTodolistAC, TodolistType, removeTodolistTC, addTodolistTC
+    setTodolistsTC, FilterValuesType,
+    TodolistType, removeTodolistTC, addTodolistTC, changeTodolistTitleTC
 } from "./store/todolists-reducer";
 import {
     addTaskTC,
@@ -66,7 +65,7 @@ const App = () => {
     }, [dispatch]);
 
     const changeTodolistTitle = useCallback((id: string, title: string) => {
-        dispatch(ChangeTodolistTitleAC(id, title));
+        dispatch(changeTodolistTitleTC(id, title));
     }, [dispatch]);
 
     return (
