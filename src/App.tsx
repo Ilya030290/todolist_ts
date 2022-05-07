@@ -6,17 +6,15 @@ import {
     AddTodolistAC,
     ChangeTodolistFilterAC,
     ChangeTodolistTitleAC, fetchTodolistsTC, FilterValuesType,
-    RemoveTodolistAC, SetTodolistsAC, TodolistType
+    RemoveTodolistAC, TodolistType
 } from "./store/todolists-reducer";
 import {
-    addTaskAC,
     addTaskTC,
-    changeTaskStatusAC,
+    ChangeTaskStatusTC,
     changeTaskTitleAC,
-    deleteTaskTC,
-    removeTaskAC
+    deleteTaskTC
 } from "./store/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store/store";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
@@ -48,7 +46,7 @@ const App = () => {
     }, [dispatch]);
 
     const changeTaskStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(changeTaskStatusAC(taskId, status, todolistId));
+        dispatch(ChangeTaskStatusTC(todolistId, taskId, status));
     }, [dispatch]);
 
     const changeTaskTitle = useCallback((taskId: string, title: string, todolistId: string) => {

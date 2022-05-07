@@ -56,7 +56,7 @@ type GetTasksResponse = {
     error: string | null
 }
 
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
     title: string
     description: string
     status: number
