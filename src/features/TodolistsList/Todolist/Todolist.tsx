@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
-import {TodolistHeader} from "./TodolistHeader";
-import TasksList from "./TasksList";
-import {FilterValuesType} from "./store/todolists-reducer";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {setTasksTC} from "./store/tasks-reducer";
-import {useAppDispatch} from "./store/store";
+import {TodolistHeader} from "./TodolistHeader/TodolistHeader";
+import TasksList from "./TasksList/TasksList";
+import {FilterValuesType} from "../todolists-reducer";
+import {TaskStatuses, TaskType} from "../../../api/todolist-api";
+import {setTasksTC} from "../tasks-reducer";
+import {useAppDispatch} from "../../../app/store";
 
 
 type TodolistPropsType = {

@@ -7,7 +7,7 @@ import {
     todolistsReducer,
     TodolistType
 } from "./todolists-reducer";
-import {TodoType} from "../api/todolist-api";
+import {TodoType} from "../../api/todolist-api";
 
 let todolistID1: string;
 let todolistID2: string;

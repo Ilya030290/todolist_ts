@@ -1,13 +1,9 @@
 import React from 'react';
-import Task from "./Task";
-import ControlButtons from "./ControlButtons";
+import Task from "./Task/Task";
+import ControlButtons from "./ControlButtons/ControlButtons";
 import {List} from "@mui/material";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {FilterValuesType} from "./store/todolists-reducer";
-
-
-
-
+import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
+import {FilterValuesType} from "../../todolists-reducer";
 
 type TasksListPropsType = {
     tasks: Array<TaskType>

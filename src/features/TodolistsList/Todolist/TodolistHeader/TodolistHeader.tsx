@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
-import {EditableSpan} from "./components/EditableSpan";
-import {AddItemForm} from "./components/AddItemForm";
+import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
+import {AddItemForm} from "../../../../components/AddItemForm/AddItemForm";
 import {IconButton} from "@mui/material";
 import {DeleteOutline} from "@mui/icons-material";
-import {FilterValuesType} from "./store/todolists-reducer";
+import {FilterValuesType} from "../../todolists-reducer";
 
 type TodolistHeaderPropsType = {
     title: string,
