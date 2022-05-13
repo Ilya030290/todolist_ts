@@ -1,11 +1,13 @@
 import React, {ChangeEvent, useState, KeyboardEvent, FC} from 'react';
 import {IconButton, TextField} from "@mui/material";
 import {ControlPoint} from "@mui/icons-material";
+import {RequestStatusType} from "../../app/app-reducer";
 
 
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
 export const AddItemForm: FC<AddItemFormPropsType> =  React.memo((props) => {
@@ -44,8 +46,9 @@ export const AddItemForm: FC<AddItemFormPropsType> =  React.memo((props) => {
                 label={"Title"}
                 error={!!error}
                 helperText={!!error && "Please enter the text!"}
+                disabled={props.disabled}
             />
-            <IconButton color={'primary'} onClick={addItem}>
+            <IconButton color={'primary'} onClick={addItem} disabled={props.disabled}>
                 <ControlPoint/>
             </IconButton>
         </div>

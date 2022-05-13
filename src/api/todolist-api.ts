@@ -40,7 +40,7 @@ export type TaskType = {
     order: number
     addedDate: string
 }
-type CommonResponseType<T={}> = {
+export type CommonResponseType<T={}> = {
     fieldsErrors: string[],
     messages: string[],
     resultCode: number,
