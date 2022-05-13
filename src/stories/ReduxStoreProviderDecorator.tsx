@@ -5,8 +5,8 @@ import {combineReducers, createStore} from "redux";
 import {v1} from "uuid";
 import {tasksReducer} from "../features/TodolistsList/tasks-reducer";
 import {todolistsReducer} from "../features/TodolistsList/todolists-reducer";
-import {AppRootStateType} from "../app/store";
 import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
+
 
 
 const rootReducer = combineReducers({
@@ -14,7 +14,9 @@ const rootReducer = combineReducers({
     todolists: todolistsReducer
 })
 
-const initialGlobalState: AppRootStateType = {
+type AppStateType = ReturnType<typeof rootReducer>;
+
+const initialGlobalState: AppStateType = {
     todolists: [
         {id: "todolistId1", title: "What to learn", filter: "all", addedDate: '', order: 0},
         {id: "todolistId2", title: "What to buy", filter: "all", addedDate: '', order: 0}
