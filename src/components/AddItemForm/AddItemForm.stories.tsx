@@ -12,7 +12,8 @@ export default {
             addItem: {
                 description: 'callback'
             }
-        }
+        },
+        disabled: {disabled: false}
     },
 } as ComponentMeta<typeof AddItemForm>;
 
@@ -21,7 +22,8 @@ const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...
 
 export const AddItemFormStory = Template.bind({});
 
-
 AddItemFormStory.args = {
-    addItem: action('Button clicked inside form')
+    addItem: action('Button clicked inside form'),
+    disabled: false
 }
+

@@ -3,45 +3,43 @@ import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {AddItemForm} from "../../../../components/AddItemForm/AddItemForm";
 import {IconButton} from "@mui/material";
 import {DeleteOutline} from "@mui/icons-material";
-import {FilterValuesType} from "../../todolists-reducer";
-import {RequestStatusType} from "../../../../app/app-reducer";
+import {TodolistType} from "../../todolists-reducer";
+
 
 type TodolistHeaderPropsType = {
-    title: string,
-    filter: FilterValuesType,
+    todolist: TodolistType
     addTask: (title: string, todolistId: string) => void
     removeTodolist: (id: string) => void
-    todolistID: string
     changeTodolistTitle: (id: string, title: string) => void
-    entityStatus: RequestStatusType
 }
 
 export const TodolistHeader = React.memo((props: TodolistHeaderPropsType) => {
 
     const addTask = useCallback((title: string) => {
-        props.addTask(title, props.todolistID);
-    }, [props.addTask, props.todolistID]);
+        props.addTask(title, props.todolist.id);
+    }, [props.addTask, props.todolist.id]);
 
     const removeTodolistHandler = useCallback(() => {
-        props.removeTodolist(props.todolistID)
-    },[props.removeTodolist, props.todolistID]);
+        props.removeTodolist(props.todolist.id)
+    },[props.removeTodolist, props.todolist.id]);
 
     const changeTodolistTitle = useCallback((title: string) => {
-        props.changeTodolistTitle(props.todolistID, title)
-    }, [props.changeTodolistTitle, props.todolistID]);
+        props.changeTodolistTitle(props.todolist.id, title)
+    }, [props.changeTodolistTitle, props.todolist.id]);
 
     return (
         <>
             <h3>
                 <EditableSpan
-                    oldTitle={props.title}
+                    oldTitle={props.todolist.title}
                     changeTitle={changeTodolistTitle}
+                    disabled={props.todolist.entityStatus === 'loading'}
                 />
-                <IconButton onClick={removeTodolistHandler} color={'secondary'} size={'small'} disabled={props.entityStatus === 'loading'}>
+                <IconButton onClick={removeTodolistHandler} color={'secondary'} size={'small'} disabled={props.todolist.entityStatus === 'loading'}>
                     <DeleteOutline fontSize={'small'}/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTask} disabled={props.entityStatus === 'loading'}/>
+            <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === 'loading'}/>
         </>
     );
 });

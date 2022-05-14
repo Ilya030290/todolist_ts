@@ -73,6 +73,9 @@ export const setTodolistsTC = (): TodolistsThunkType => (dispatch: TodolistsDisp
             dispatch(SetTodolistsAC(res.data));
             dispatch(SetAppStatusAC('succeeded'));
         })
+        .catch((err: AxiosError) => {
+            handleServerNetworkError(dispatch, err.message);
+        })
 }
 
 export const removeTodolistTC = (todolistId: string): TodolistsThunkType => (dispatch: TodolistsDispatchType) => {
@@ -82,6 +85,9 @@ export const removeTodolistTC = (todolistId: string): TodolistsThunkType => (dis
         .then((res) => {
             dispatch(RemoveTodolistAC(todolistId));
             dispatch(SetAppStatusAC('succeeded'));
+        })
+        .catch((err: AxiosError) => {
+            handleServerNetworkError(dispatch, err.message);
         })
 }
 
@@ -103,9 +109,18 @@ export const addTodolistTC = (title: string): TodolistsThunkType => (dispatch: T
 
 export const changeTodolistTitleTC = (todolistId: string, title: string): TodolistsThunkType => (dispatch: TodolistsDispatchType) => {
     dispatch(SetAppStatusAC('loading'));
+    dispatch(ChangeTodolistEntityStatusAC(todolistId, 'loading'));
     TodolistApi.updateTodoTitle(todolistId, title)
         .then((res) => {
-            dispatch(ChangeTodolistTitleAC(todolistId, title));
-            dispatch(SetAppStatusAC('succeeded'));
+            if (res.data.resultCode === 0) {
+                dispatch(ChangeTodolistTitleAC(todolistId, title));
+                dispatch(SetAppStatusAC('succeeded'));
+                dispatch(ChangeTodolistEntityStatusAC(todolistId, 'succeeded'));
+            } else {
+                handleServerAppError(dispatch, res.data);
+            }
+        })
+        .catch((err: AxiosError) => {
+            handleServerNetworkError(dispatch, err.message);
         })
 }

@@ -17,6 +17,7 @@ type ActionsType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof SetAppStatusAC>
     | ReturnType<typeof SetAppErrorAC>
 
+
 export type TasksDispatchType = ThunkDispatch<TaskStateType, unknown, ActionsType>;
 export type TasksThunkType = ThunkAction<void, TaskStateType, unknown, ActionsType>;
 export type UpdateDomainTaskModelType = {
@@ -31,6 +32,7 @@ export type UpdateDomainTaskModelType = {
 export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
+
 const initialState: TaskStateType = {};
 
 //Reducer
@@ -75,6 +77,7 @@ export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, t
 export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
     ({type: "SET-TASKS", todolistId, tasks} as const);
 
+
 //ThunkCreators
 export const setTasksTC = (todolistId: string): TasksThunkType => (dispatch: TasksDispatchType) => {
     dispatch(SetAppStatusAC('loading'));
@@ -83,14 +86,20 @@ export const setTasksTC = (todolistId: string): TasksThunkType => (dispatch: Tas
             dispatch(SetAppStatusAC('succeeded'));
             dispatch(setTasksAC(todolistId, res.data.items));
         })
+        .catch((err: AxiosError) => {
+            handleServerNetworkError(dispatch, err.message);
+        })
 }
 
 export const deleteTaskTC = (todolistId: string, taskId: string): TasksThunkType => (dispatch: TasksDispatchType) => {
     dispatch(SetAppStatusAC('loading'));
     TodolistApi.deleteTask(todolistId, taskId)
         .then((res) => {
-            dispatch(removeTaskAC(taskId, todolistId));
-            dispatch(SetAppStatusAC('succeeded'));
+                dispatch(removeTaskAC(taskId, todolistId));
+                dispatch(SetAppStatusAC('succeeded'));
+        })
+        .catch((err: AxiosError) => {
+            handleServerNetworkError(dispatch, err.message);
         })
 }
 
@@ -129,10 +138,16 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
             dispatch(SetAppStatusAC('loading'));
             TodolistApi.updateTask(todolistId, taskId, apiModel)
                 .then((res) => {
-                    dispatch(updateTaskAC(taskId, domainModel, todolistId));
-                    dispatch(SetAppStatusAC('succeeded'));
+                    if (res.data.resultCode === 0) {
+                        dispatch(updateTaskAC(taskId, domainModel, todolistId));
+                        dispatch(SetAppStatusAC('succeeded'));
+                    } else {
+                        handleServerAppError(dispatch, res.data);
+                    }
+                })
+                .catch((err: AxiosError) => {
+                    handleServerNetworkError(dispatch, err.message);
                 })
         }
-
     }
 

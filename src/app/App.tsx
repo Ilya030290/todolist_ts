@@ -8,8 +8,11 @@ import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
 
+type AppPropsType = {
+    demo?: boolean
+}
 
-const App: React.FC = () => {
+const App: React.FC<AppPropsType> = ({demo= false}) => {
 
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
 
@@ -30,7 +33,7 @@ const App: React.FC = () => {
                 status === 'loading' && <LinearProgress color={"secondary"}/>
             }
             <Container fixed>
-                <TodolistsList/>
+                <TodolistsList demo={demo}/>
             </Container>
             <ErrorSnackbar/>
         </div>

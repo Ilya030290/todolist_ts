@@ -3,15 +3,14 @@ import Task from "./Task/Task";
 import ControlButtons from "./ControlButtons/ControlButtons";
 import {List} from "@mui/material";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
-import {FilterValuesType} from "../../todolists-reducer";
+import {FilterValuesType, TodolistType} from "../../todolists-reducer";
 
 type TasksListPropsType = {
+    todolist: TodolistType
     tasks: Array<TaskType>
-    filter: FilterValuesType
     removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (id: string, filter: FilterValuesType) => void
     changeTaskStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
-    todolistID: string
     changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
 };
 
@@ -22,7 +21,7 @@ const TasksList = React.memo((props: TasksListPropsType) => {
             key={task.id} {...task}
             removeTask={props.removeTask}
             changeTaskStatus={props.changeTaskStatus}
-            todolistID={props.todolistID}
+            todolistID={props.todolist.id}
             changeTaskTitle={props.changeTaskTitle}
         />
     });
@@ -42,9 +41,9 @@ const TasksList = React.memo((props: TasksListPropsType) => {
             {tasksList}
             </List>
             <ControlButtons
-                todolistID={props.todolistID}
+                todolistID={props.todolist.id}
                 changeFilter={props.changeFilter}
-                filter={props.filter}
+                filter={props.todolist.filter}
             />
         </>
     );

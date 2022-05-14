@@ -3,7 +3,6 @@ import {Button} from "@mui/material";
 import {FilterValuesType} from "../../../todolists-reducer";
 
 
-
 type ControlButtonsType = {
     todolistID: string
     filter: FilterValuesType,
