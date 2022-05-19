@@ -7,6 +7,8 @@ import {useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
+import {Login} from "../features/Login/Login";
+import {Routes, Route, Navigate} from "react-router-dom";
 
 type AppPropsType = {
     demo?: boolean
@@ -33,7 +35,12 @@ const App: React.FC<AppPropsType> = ({demo= false}) => {
                 status === 'loading' && <LinearProgress color={"secondary"}/>
             }
             <Container fixed>
-                <TodolistsList demo={demo}/>
+                <Routes>
+                    <Route path={"/"} element={<TodolistsList demo={demo}/>} />
+                    <Route path={"/login"} element={<Login/>} />
+                    <Route path={"/404"} element={<h1 style={{textAlign: "center"}}>404 Page not found</h1>} />
+                    <Route path={"*"} element={<Navigate to={"/404"} />} />
+                </Routes>
             </Container>
             <ErrorSnackbar/>
         </div>

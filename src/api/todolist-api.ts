@@ -60,6 +60,17 @@ export type UpdateTaskModelType = {
     startDate: string
     deadline: string
 }
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: string
+}
+export type MeResponseType = {
+    id: number
+    email: string
+    login: string
+}
 
 //Api
 export const TodolistApi = {
@@ -86,5 +97,14 @@ export const TodolistApi = {
     },
     updateTask: (todolistId: string, taskId: string, model: UpdateTaskModelType) => {
         return instance.put<CommonResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
+    }
+}
+
+export const authAPI = {
+    login: (data: LoginParamsType) => {
+        return instance.post<LoginParamsType, AxiosResponse<CommonResponseType<{userId: number}>>>(`/auth/login`, data)
+    },
+    me: () => {
+        return instance.get<CommonResponseType<MeResponseType>>(`/auth/me`)
     }
 }
