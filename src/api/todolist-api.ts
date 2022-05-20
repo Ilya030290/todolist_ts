@@ -101,9 +101,12 @@ export const TodolistApi = {
 
 export const authAPI = {
     login: (data: LoginParamsType) => {
-        return instance.post<LoginParamsType, AxiosResponse<CommonResponseType<{userId: number}>>>(`auth/login`, data);
+        return instance.post<LoginParamsType, AxiosResponse<CommonResponseType<{userId: number}>>>('auth/login', data);
     },
     me: () => {
-        return instance.get<CommonResponseType<MeResponseType>>(`auth/me`);
+        return instance.get<CommonResponseType<MeResponseType>>('auth/me');
+    },
+    logout: () => {
+        return instance.delete<CommonResponseType>('auth/login')
     }
 }

@@ -37,7 +37,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         } else {
             navigate('/login')
         }
-    }, [])
+    }, [isLoggedIn])
 
     const removeTask = useCallback((taskId: string, todolistId: string) => {
         dispatch(deleteTaskTC(todolistId, taskId));

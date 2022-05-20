@@ -18,6 +18,7 @@ import {initializeAppTC, RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
 import {Login} from "../features/Login/Login";
 import {Routes, Route, Navigate} from "react-router-dom";
+import {logoutTC} from "../features/Login/auth-reducer";
 
 type AppPropsType = {
     demo?: boolean
@@ -27,6 +28,7 @@ const App: React.FC<AppPropsType> = ({demo= false}) => {
 
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized);
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -40,6 +42,10 @@ const App: React.FC<AppPropsType> = ({demo= false}) => {
         </div>
     }
 
+    const logOutHandler = () => {
+        dispatch(logoutTC());
+    }
+
     return (
         <div className="App">
             <AppBar position="static">
@@ -50,12 +56,13 @@ const App: React.FC<AppPropsType> = ({demo= false}) => {
                     <Typography variant="h6">
                         Todolists
                     </Typography>
-                    <Button color="inherit" variant={"outlined"}>Login</Button>
+                    {isLoggedIn
+                        ? <Button color={"inherit"} variant={"outlined"} onClick={logOutHandler}>Logout</Button>
+                        : <Button color={"inherit"} variant={"outlined"}>Login</Button>
+                    }
                 </Toolbar>
             </AppBar>
-            {
-                status === 'loading' && <LinearProgress color={"secondary"}/>
-            }
+            {status === 'loading' && <LinearProgress color={"secondary"}/>}
             <Container fixed>
                 <Routes>
                     <Route path={"/"} element={<TodolistsList demo={demo}/>} />
