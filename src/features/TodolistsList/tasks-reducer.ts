@@ -80,10 +80,10 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
 
 //ThunkCreators
 export const setTasksTC = (todolistId: string): TasksThunkType => (dispatch: TasksDispatchType) => {
-    dispatch(SetAppStatusAC('loading'));
+    dispatch(SetAppStatusAC({status: 'loading'}));
     TodolistApi.getTasks(todolistId)
         .then((res) => {
-            dispatch(SetAppStatusAC('succeeded'));
+            dispatch(SetAppStatusAC({status: 'succeeded'}));
             dispatch(setTasksAC(todolistId, res.data.items));
         })
         .catch((err: AxiosError) => {
@@ -92,11 +92,11 @@ export const setTasksTC = (todolistId: string): TasksThunkType => (dispatch: Tas
 }
 
 export const deleteTaskTC = (todolistId: string, taskId: string): TasksThunkType => (dispatch: TasksDispatchType) => {
-    dispatch(SetAppStatusAC('loading'));
+    dispatch(SetAppStatusAC({status: 'loading'}));
     TodolistApi.deleteTask(todolistId, taskId)
         .then((res) => {
                 dispatch(removeTaskAC(taskId, todolistId));
-                dispatch(SetAppStatusAC('succeeded'));
+                dispatch(SetAppStatusAC({status: 'succeeded'}));
         })
         .catch((err: AxiosError) => {
             handleServerNetworkError(dispatch, err.message);
@@ -104,12 +104,12 @@ export const deleteTaskTC = (todolistId: string, taskId: string): TasksThunkType
 }
 
 export const addTaskTC = (todolistId: string, taskTitle: string): TasksThunkType => (dispatch: TasksDispatchType) => {
-    dispatch(SetAppStatusAC('loading'));
+    dispatch(SetAppStatusAC({status: 'loading'}));
     TodolistApi.createTask(todolistId, taskTitle)
         .then((res) => {
             if (res.data.resultCode === 0) {
                 dispatch(addTaskAC(res.data.data.item));
-                dispatch(SetAppStatusAC('succeeded'));
+                dispatch(SetAppStatusAC({status: 'succeeded'}));
             } else {
                 handleServerAppError(dispatch, res.data);
             }
@@ -135,12 +135,12 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
                 deadline: currentTask.deadline,
                 ...domainModel
             }
-            dispatch(SetAppStatusAC('loading'));
+            dispatch(SetAppStatusAC({status: 'loading'}));
             TodolistApi.updateTask(todolistId, taskId, apiModel)
                 .then((res) => {
                     if (res.data.resultCode === 0) {
                         dispatch(updateTaskAC(taskId, domainModel, todolistId));
-                        dispatch(SetAppStatusAC('succeeded'));
+                        dispatch(SetAppStatusAC({status: 'succeeded'}));
                     } else {
                         handleServerAppError(dispatch, res.data);
                     }
