@@ -10,7 +10,7 @@ test('ids should be equals', () => {
 
     let newTodolist: TodoType = {title: "new todolist", id: "id1234", addedDate: "", order: 0};
 
-    const action = AddTodolistAC(newTodolist);
+    const action = AddTodolistAC({todolist: newTodolist});
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsState, action)
@@ -19,6 +19,6 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0];
     const idFromTodolists = endTodolistsState[0].id;
 
-    expect(idFromTasks).toBe(action.todolist.id);
-    expect(idFromTodolists).toBe(action.todolist.id);
+    expect(idFromTasks).toBe(action.payload.todolist.id);
+    expect(idFromTodolists).toBe(action.payload.todolist.id);
 });

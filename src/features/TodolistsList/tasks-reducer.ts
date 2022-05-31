@@ -5,6 +5,7 @@ import {AppRootStateType} from "../../app/store";
 import {SetAppErrorAC, SetAppStatusAC} from "../../app/app-reducer";
 import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 //Types
 type ActionsType = ReturnType<typeof removeTaskAC>
@@ -35,48 +36,48 @@ export type TaskStateType = {
 
 const initialState: TaskStateType = {};
 
-//Reducer
-export const tasksReducer = (state: TaskStateType = initialState, action: ActionsType): TaskStateType => {
-    switch (action.type) {
-        case "SET-TASKS":
-            return {...state, [action.todolistId]: action.tasks};
-        case "SET-TODOLISTS":
-            let stateCopy = {...state};
-            action.todos.forEach((tl) => stateCopy[tl.id] = []);
-            return stateCopy;
-        case 'REMOVE-TASK':
-            return {...state, [action.todolistId]: state[action.todolistId].filter(task => task.id !== action.taskId)};
-        case 'ADD-TASK':
-            return {...state, [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]};
-        case 'UPDATE-TASK':
-            return {
-                ...state,
-                [action.todolistId]: state[action.todolistId].map(task => task.id === action.taskId ? {...task, ...action.model} : task)
-            };
-        case 'ADD-TODOLIST':
-            return {...state, [action.todolist.id]: []};
-        case 'REMOVE-TODOLIST':
-            let newState = {...state};
-            delete newState[action.id];
-            return newState;
-        default:
-            return state;
+const slice = createSlice({
+    name: "tasks",
+    initialState: initialState,
+    reducers: {
+        removeTaskAC(state, action: PayloadAction<{taskId: string, todolistId: string}>) {
+            const tasks = state[action.payload.todolistId];
+            const index = tasks.findIndex(t => t.id === action.payload.taskId);
+            if (index > -1) {
+                tasks.splice(index, 1);
+            }
+        },
+        addTaskAC(state, action: PayloadAction<{task: TaskType}>) {
+            state[action.payload.task.todoListId].unshift(action.payload.task);
+        },
+        updateTaskAC(state, action: PayloadAction<{taskId: string, model: UpdateDomainTaskModelType, todolistId: string}>) {
+            const tasks = state[action.payload.todolistId];
+            const index = tasks.findIndex(t => t.id === action.payload.taskId);
+            if (index > -1) {
+                tasks[index] = {...tasks[index], ...action.payload.model};
+            }
+        },
+        setTasksAC(state, action: PayloadAction<{todolistId: string, tasks: TaskType[]}>) {
+            state[action.payload.todolistId] = action.payload.tasks;
+        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(AddTodolistAC, (state, action) => {
+            state[action.payload.todolist.id] = [];
+        });
+        builder.addCase(RemoveTodolistAC, (state, action) => {
+            delete state[action.payload.id];
+        });
+        builder.addCase(SetTodolistsAC, (state, action) => {
+            action.payload.todos.forEach((tl) => state[tl.id] = []);
+        });
     }
-}
+})
 
-//ActionCreators
-export const removeTaskAC = (taskId: string, todolistId: string) =>
-    ({type: 'REMOVE-TASK', taskId, todolistId} as const);
+//Reducer
 
-export const addTaskAC = (task: TaskType) =>
-    ({type: 'ADD-TASK', task} as const);
-
-export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string) =>
-    ({type: 'UPDATE-TASK', taskId, model, todolistId} as const);
-
-export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
-    ({type: "SET-TASKS", todolistId, tasks} as const);
-
+export const tasksReducer = slice.reducer;
+export const {removeTaskAC, addTaskAC, updateTaskAC, setTasksAC} = slice.actions;
 
 //ThunkCreators
 export const setTasksTC = (todolistId: string): TasksThunkType => (dispatch: TasksDispatchType) => {
@@ -84,7 +85,7 @@ export const setTasksTC = (todolistId: string): TasksThunkType => (dispatch: Tas
     TodolistApi.getTasks(todolistId)
         .then((res) => {
             dispatch(SetAppStatusAC({status: 'succeeded'}));
-            dispatch(setTasksAC(todolistId, res.data.items));
+            dispatch(setTasksAC({todolistId: todolistId, tasks: res.data.items}));
         })
         .catch((err: AxiosError) => {
             handleServerNetworkError(dispatch, err.message);
@@ -95,7 +96,7 @@ export const deleteTaskTC = (todolistId: string, taskId: string): TasksThunkType
     dispatch(SetAppStatusAC({status: 'loading'}));
     TodolistApi.deleteTask(todolistId, taskId)
         .then((res) => {
-                dispatch(removeTaskAC(taskId, todolistId));
+                dispatch(removeTaskAC({taskId: taskId, todolistId: todolistId}));
                 dispatch(SetAppStatusAC({status: 'succeeded'}));
         })
         .catch((err: AxiosError) => {
@@ -108,7 +109,7 @@ export const addTaskTC = (todolistId: string, taskTitle: string): TasksThunkType
     TodolistApi.createTask(todolistId, taskTitle)
         .then((res) => {
             if (res.data.resultCode === 0) {
-                dispatch(addTaskAC(res.data.data.item));
+                dispatch(addTaskAC({task: res.data.data.item}));
                 dispatch(SetAppStatusAC({status: 'succeeded'}));
             } else {
                 handleServerAppError(dispatch, res.data);
@@ -139,7 +140,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
             TodolistApi.updateTask(todolistId, taskId, apiModel)
                 .then((res) => {
                     if (res.data.resultCode === 0) {
-                        dispatch(updateTaskAC(taskId, domainModel, todolistId));
+                        dispatch(updateTaskAC({taskId: taskId, model: domainModel, todolistId: todolistId}));
                         dispatch(SetAppStatusAC({status: 'succeeded'}));
                     } else {
                         handleServerAppError(dispatch, res.data);
