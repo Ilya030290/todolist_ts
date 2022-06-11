@@ -1,4 +1,4 @@
-import {addTaskAC, removeTaskAC, setTasksAC, tasksReducer, TaskStateType, updateTaskAC} from './tasks-reducer';
+import {addTaskAC, deleteTaskTC, setTasksTC, tasksReducer, TaskStateType, updateTaskAC} from './tasks-reducer';
 import {AddTodolistAC, RemoveTodolistAC, SetTodolistsAC} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/todolist-api";
 
@@ -29,7 +29,7 @@ beforeEach(() => {
 
 test('correct task should be deleted from correct array', () => {
 
-    const action = removeTaskAC({taskId: "2", todolistId: "todolistId2"});
+    const action = deleteTaskTC.fulfilled({taskId: "2", todolistId: "todolistId2"}, 'requestId', {todolistId: "todolistId2", taskId: "2"});
 
     const endState = tasksReducer(startState, action)
 
@@ -136,7 +136,7 @@ test('empty arrays should be added when we set todolists', () => {
 
 test('tasks should be added for todolist', () => {
 
-    const action = setTasksAC({todolistId: "todolistId1", tasks: startState["todolistId1"]});
+    const action = setTasksTC.fulfilled({todolistId: "todolistId1", tasks: startState["todolistId1"]}, 'requestId', 'todolistId1');
 
     const endState = tasksReducer({"todolistId2": [], "todolistId1": []}, action);
 
