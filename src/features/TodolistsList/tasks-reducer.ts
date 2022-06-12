@@ -61,13 +61,18 @@ const slice = createSlice({
             action.payload.todos.forEach((tl) => state[tl.id] = []);
         });
         builder.addCase(setTasksTC.fulfilled, (state, action) => {
-            state[action.payload.todolistId] = action.payload.tasks;
+            if (action.payload) {
+                state[action.payload.todolistId] = action.payload.tasks;
+            }
         });
         builder.addCase(deleteTaskTC.fulfilled, (state, action) => {
-            const tasks = state[action.payload.todolistId];
-            const index = tasks.findIndex(t => t.id === action.payload.taskId);
-            if (index > -1) {
-                tasks.splice(index, 1);
+            if (action.payload) {
+                const tasks = state[action.payload.todolistId];
+                // @ts-ignore
+                const index = tasks.findIndex(t => t.id === action.payload.taskId);
+                if (index > -1) {
+                    tasks.splice(index, 1);
+                }
             }
         })
     }
@@ -82,16 +87,24 @@ export const {addTaskAC, updateTaskAC} = slice.actions;
 
 export const setTasksTC = createAsyncThunk('tasks/setTasks', async (todolistId: string, thunkAPI) => {
     thunkAPI.dispatch(SetAppStatusAC({status: 'loading'}));
-    const res = await TodolistApi.getTasks(todolistId)
-    const tasks = res.data.items;
-    thunkAPI.dispatch(SetAppStatusAC({status: 'succeeded'}));
-    return {todolistId, tasks};
+    try {
+        const res = await TodolistApi.getTasks(todolistId)
+        const tasks = res.data.items;
+        thunkAPI.dispatch(SetAppStatusAC({status: 'succeeded'}));
+        return {todolistId, tasks};
+    } catch (error: any) {
+        handleServerNetworkError(thunkAPI.dispatch, error.message);
+    }
 })
 export const deleteTaskTC = createAsyncThunk('tasks/deleteTask', async (param: { todolistId: string, taskId: string }, thunkAPI) => {
     thunkAPI.dispatch(SetAppStatusAC({status: 'loading'}));
-    const res = await TodolistApi.deleteTask(param.todolistId, param.taskId)
-    thunkAPI.dispatch(SetAppStatusAC({status: 'succeeded'}));
-    return {taskId: param.taskId, todolistId: param.todolistId};
+    try {
+        const res = await TodolistApi.deleteTask(param.todolistId, param.taskId)
+        thunkAPI.dispatch(SetAppStatusAC({status: 'succeeded'}));
+        return {taskId: param.taskId, todolistId: param.todolistId};
+    } catch (error: any) {
+        handleServerNetworkError(thunkAPI.dispatch, error.message);
+    }
 })
 
 export const addTaskTC = (todolistId: string, taskTitle: string): TasksThunkType => (dispatch: TasksDispatchType) => {
