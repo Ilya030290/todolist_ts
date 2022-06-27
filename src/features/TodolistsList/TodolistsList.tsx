@@ -48,11 +48,11 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, [dispatch]);
 
     const changeTaskStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, taskId, {status}));
+        dispatch(updateTaskTC({todolistId, taskId, domainModel: {status}}));
     }, [dispatch]);
 
     const changeTaskTitle = useCallback((taskId: string, title: string, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, taskId, {title}));
+        dispatch(updateTaskTC({todolistId, taskId, domainModel: {title}}));
     }, [dispatch]);
 
     const changeFilter = useCallback((id: string, filter: FilterValuesType) => {
