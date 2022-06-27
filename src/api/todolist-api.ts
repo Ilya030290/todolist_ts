@@ -44,6 +44,7 @@ export type CommonResponseType<T={}> = {
     fieldsErrors: string[],
     messages: string[],
     resultCode: number,
+    fieldErrors?: Array<{field: string, error: string}>,
     data: T
 }
 type GetTasksResponse = {

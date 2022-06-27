@@ -39,11 +39,11 @@ export const loginTC = createAsyncThunk('auth/login', async (param: LoginParamsT
             return {isLoggedIn: true};
         } else {
             handleServerAppError(thunkAPI.dispatch, res.data);
-            return thunkAPI.rejectWithValue({isLoggedIn: false});
+            return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors});
         }
-    } catch (error: any) {
-        handleServerNetworkError(thunkAPI.dispatch, error);
-        return thunkAPI.rejectWithValue({isLoggedIn: false});
+    } catch (err: any) {
+        handleServerNetworkError(thunkAPI.dispatch, err);
+        return thunkAPI.rejectWithValue({errors: [err.message], fieldsErrors: undefined});
     }
 })
 
