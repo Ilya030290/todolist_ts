@@ -20,8 +20,11 @@ const slice = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(loginTC.fulfilled, (state, action) => {
-                state.isLoggedIn = action.payload.isLoggedIn;
+        builder.addCase(loginTC.fulfilled, (state) => {
+            state.isLoggedIn = true;
+        })
+        builder.addCase(logoutTC.fulfilled, (state) => {
+            state.isLoggedIn = false;
         })
     }
 });
@@ -36,7 +39,6 @@ export const loginTC = createAsyncThunk('auth/login', async (param: LoginParamsT
         const res = await authAPI.login(param)
         if (res.data.resultCode === 0) {
             thunkAPI.dispatch(SetAppStatusAC({status: 'succeeded'}));
-            return {isLoggedIn: true};
         } else {
             handleServerAppError(thunkAPI.dispatch, res.data);
             return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors});
@@ -47,21 +49,21 @@ export const loginTC = createAsyncThunk('auth/login', async (param: LoginParamsT
     }
 })
 
-export const logoutTC = (): AuthThunkType => (dispatch: AuthDispatchType) => {
-    dispatch(SetAppStatusAC({status: 'loading'}));
-    authAPI.logout()
-        .then((res) => {
-            if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({value: false}));
-                dispatch(SetAppStatusAC({status: 'succeeded'}));
-            } else {
-                handleServerAppError(dispatch, res.data);
-            }
-        })
-        .catch((error) => {
-            handleServerNetworkError(dispatch, error);
-        })
-}
+export const logoutTC = createAsyncThunk('auth/logout', async (param, thunkAPI) => {
+    thunkAPI.dispatch(SetAppStatusAC({status: 'loading'}));
+    try {
+        const res = await authAPI.logout()
+        if (res.data.resultCode === 0) {
+            thunkAPI.dispatch(SetAppStatusAC({status: 'succeeded'}));
+        } else {
+            handleServerAppError(thunkAPI.dispatch, res.data);
+            thunkAPI.rejectWithValue({});
+        }
+    } catch (err: any) {
+        handleServerNetworkError(thunkAPI.dispatch, err);
+        thunkAPI.rejectWithValue({});
+    }
+})
 
 
 
