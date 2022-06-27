@@ -1,15 +1,15 @@
 import {authAPI} from "../api/todolist-api";
 import {setIsLoggedInAC} from "../features/Login/auth-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {ThunkAction} from "redux-thunk";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 
-export type AppActionsType = SetAppErrorAT | SetAppStatusAT | SetAppIsInitializedAT;
+export type AppActionsType = SetAppErrorAT | SetAppStatusAT;
 export type SetAppErrorAT = ReturnType<typeof SetAppErrorAC>;
 export type SetAppStatusAT = ReturnType<typeof SetAppStatusAC>;
-export type SetAppIsInitializedAT = ReturnType<typeof SetAppIsInitializedAC>;
+
 
 const initialState = {
     status: 'loading' as RequestStatusType,
@@ -18,7 +18,6 @@ const initialState = {
 }
 
 export type InitialStateType = typeof initialState;
-export type AppDispatchType = ThunkDispatch<InitialStateType, unknown, AppActionsType | ReturnType<typeof setIsLoggedInAC>>;
 export type AppThunkType = ThunkAction<void, InitialStateType, unknown, AppActionsType>;
 
 const slice = createSlice({
@@ -30,33 +29,31 @@ const slice = createSlice({
         },
         SetAppErrorAC(state, action: PayloadAction<{error: string | null}>) {
             state.error = action.payload.error;
-        },
-        SetAppIsInitializedAC(state, action: PayloadAction<{isInitialized: boolean}>) {
-            state.isInitialized = action.payload.isInitialized;
         }
+    },
+    extraReducers: builder => {
+        builder.addCase(initializeAppTC.fulfilled, (state) => {
+            state.isInitialized = true;
+        })
     }
 });
 
 export const appReducer = slice.reducer;
-export const {SetAppStatusAC, SetAppErrorAC, SetAppIsInitializedAC} = slice.actions;
+export const {SetAppStatusAC, SetAppErrorAC} = slice.actions;
 
 //ThunkCreator
-export const initializeAppTC = (): AppThunkType => (dispatch: AppDispatchType) => {
-    dispatch(SetAppStatusAC({status: 'loading'}));
-    authAPI.me()
-        .then((res) => {
-            if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({value: true}));
-                dispatch(SetAppStatusAC({status: 'succeeded'}));
-            } else {
-                handleServerAppError(dispatch, res.data);
-            }
-        })
-        .catch((error) => {
-            handleServerNetworkError(dispatch, error);
-        })
-        .finally(() => {
-            dispatch(SetAppIsInitializedAC({isInitialized: true}));
-        })
-}
+export const initializeAppTC = createAsyncThunk('app/initializeApp', async (param, thunkAPI) => {
+    thunkAPI.dispatch(SetAppStatusAC({status: 'loading'}));
+    try {
+        const res = await authAPI.me();
+        if (res.data.resultCode === 0) {
+            thunkAPI.dispatch(setIsLoggedInAC({value: true}));
+            thunkAPI.dispatch(SetAppStatusAC({status: 'succeeded'}));
+        } else {
+            handleServerAppError(thunkAPI.dispatch, res.data);
+        }
+    } catch (err: any) {
+            handleServerNetworkError(thunkAPI.dispatch, err);
+        }
+})
 
