@@ -2,8 +2,8 @@ import {v1} from "uuid";
 import {
     addTodolistTC,
     ChangeTodolistEntityStatusAC,
-    ChangeTodolistFilterAC,
-    ChangeTodolistTitleAC, FilterValuesType, removeTodolistTC,
+    ChangeTodolistFilterAC, changeTodolistTitleTC,
+    FilterValuesType, removeTodolistTC,
     setTodolistsTC,
     todolistsReducer,
     TodolistType
@@ -60,7 +60,7 @@ test('correct todolist should change his name', () => {
 
     let newTodolistTitle = "New Todolist";
 
-    const endState: Array<TodolistType> = todolistsReducer(startState, ChangeTodolistTitleAC({id: todolistID2, title: newTodolistTitle}))
+    const endState: Array<TodolistType> = todolistsReducer(startState, changeTodolistTitleTC.fulfilled({id: todolistID2, title: newTodolistTitle}, "requestId", {todolistId: todolistID2, title: newTodolistTitle}))
 
     expect(endState[0].title).toBe("What to learn");
     expect(endState[1].title).toBe(newTodolistTitle);
