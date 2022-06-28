@@ -3,7 +3,7 @@ import {
     AddTodolistAC, ChangeTodolistEntityStatusAC,
     ChangeTodolistFilterAC,
     ChangeTodolistTitleAC, FilterValuesType,
-    RemoveTodolistAC, SetTodolistsAC,
+    RemoveTodolistAC, setTodolistsTC,
     todolistsReducer,
     TodolistType
 } from "./todolists-reducer";
@@ -68,7 +68,7 @@ test('correct todolist should change his name', () => {
 
 test('todolists should be set to the state', () => {
 
-    const endState: Array<TodolistType> = todolistsReducer([], SetTodolistsAC({todos: startState}))
+    const endState: Array<TodolistType> = todolistsReducer([], setTodolistsTC.fulfilled({todos: startState}, "requestId"))
 
     expect(endState.length).toBe(2);
 });

@@ -1,5 +1,5 @@
 import {addTaskTC, deleteTaskTC, setTasksTC, tasksReducer, TaskStateType, updateTaskTC} from './tasks-reducer';
-import {AddTodolistAC, RemoveTodolistAC, SetTodolistsAC} from "./todolists-reducer";
+import {AddTodolistAC, RemoveTodolistAC, setTodolistsTC} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/todolist-api";
 
 
@@ -124,10 +124,10 @@ test('property with todolistId should be deleted', () => {
 
 test('empty arrays should be added when we set todolists', () => {
 
-    const action = SetTodolistsAC({todos: [
+    const action = setTodolistsTC.fulfilled({todos: [
             {id: "todolistID1", title: 'What to learn', addedDate: '', order: 0},
             {id: "todolistID2", title: 'What to buy', addedDate: '', order: 0}
-        ]});
+        ]}, "requestId");
 
     const endState = tasksReducer({}, action)
     const keys = Object.keys(endState);
