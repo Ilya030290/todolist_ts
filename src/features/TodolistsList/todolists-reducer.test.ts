@@ -1,6 +1,7 @@
 import {v1} from "uuid";
 import {
-    AddTodolistAC, ChangeTodolistEntityStatusAC,
+    addTodolistTC,
+    ChangeTodolistEntityStatusAC,
     ChangeTodolistFilterAC,
     ChangeTodolistTitleAC, FilterValuesType, removeTodolistTC,
     setTodolistsTC,
@@ -37,7 +38,7 @@ test('correct todolist should be added', () => {
 
     let newTodolist: TodoType = {title: "New Todolist", id: "any id", addedDate: "", order: 0};
 
-    const endState: Array<TodolistType> = todolistsReducer(startState, AddTodolistAC({todolist: newTodolist}))
+    const endState: Array<TodolistType> = todolistsReducer(startState, addTodolistTC.fulfilled({todolist: newTodolist}, "requestId", newTodolist.title))
 
     expect(endState.length).toBe(3);
     expect(endState[0].title).toBe("New Todolist");
